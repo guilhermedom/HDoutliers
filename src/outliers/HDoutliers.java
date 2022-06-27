@@ -47,7 +47,7 @@ public class HDoutliers {
 //	    		memberList.add(data.getInstance(uniqueIndexes.get(i)));
 //	    		members.add(memberList);
 //	    	}
-	    	members = data.defineMemberLists();
+	    	members = defineMemberLists(data);
 	    	this.data = null;
 	    	System.gc();
 	    }
@@ -237,5 +237,65 @@ public class HDoutliers {
 	        diff.add(arr.get(i) - arr.get(i - 1));
 	    }
 	    return diff;
+	}
+	
+	public List<Integer> findUniqueIndexes(Table data) {
+		List<Integer> uniqueIndexes = new ArrayList<Integer>();
+		boolean flag;
+		
+		for (int i = 0; i < data.getNumRows(); i++) {
+			flag = true;
+			for (int j = 0; j < data.getNumRows(); j++) {
+				if (j == i) continue;
+				if (data.getInstance(i).equals(data.getInstance(j))) {
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {
+				uniqueIndexes.add(i);
+			}
+		}
+		return uniqueIndexes;
+	}
+
+	public List<List<Instance>> defineMemberLists(Table data) {
+		List<List<Instance>> memberLists = new ArrayList<List<Instance>>();
+		int count = 0;
+		
+		for (int i = 0; i < data.getNumRows(); i++) {
+			List<Instance> memberList = new ArrayList<Instance>();
+			memberLists.add(memberList);
+		}
+		
+		for (int i = 0; i < data.getNumRows(); i++) {
+			for (int j = 0; j <= i; j++) {
+//				if (i == j) {
+//					List<Instance> memberList = new ArrayList<Instance>();
+//					memberLists.add(memberList);
+//				}
+				if (data.getInstance(i).equals(data.getInstance(j))) {
+					if (i != j) {
+						count++;
+					}
+//					if (memberLists.get(j).isEmpty()) {
+//						memberLists.get(j).add(i);
+//						//memberLists.get(i).add(j);
+//					} else {
+//						memberLists.get(j).add(i);
+//					}
+					memberLists.get(j).add(data.getInstance(i));
+					break;
+				}
+			}
+		}
+		
+		for (int i = 0; i < memberLists.size(); i++) {
+			if (memberLists.get(i).isEmpty()) {
+				memberLists.remove(i);
+				i--;
+			}
+		}
+		return memberLists;
 	}
 }

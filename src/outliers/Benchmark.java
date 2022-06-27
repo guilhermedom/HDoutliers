@@ -7,7 +7,6 @@ import common.Instance;
 import common.Table;
 
 public class Benchmark {
-
 	public static void main(String[] args) throws Exception {
 
 		Table[] datasets = {

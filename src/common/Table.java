@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -226,65 +225,5 @@ public class Table implements Cloneable {
         }
 			
 		return new Table(numRows, numCols, instances, name, hasLabel, attributes, datatypes);
-	}
-	
-	public List<Integer> findUniqueIndexes() {
-		List<Integer> uniqueIndexes = new ArrayList<Integer>();
-		boolean flag;
-		
-		for (int i = 0; i < getNumRows(); i++) {
-			flag = true;
-			for (int j = 0; j < getNumRows(); j++) {
-				if (j == i) continue;
-				if (getInstance(i).equals(getInstance(j))) {
-					flag = false;
-					break;
-				}
-			}
-			if (flag) {
-				uniqueIndexes.add(i);
-			}
-		}
-		return uniqueIndexes;
-	}
-
-	public List<List<Instance>> defineMemberLists() {
-		List<List<Instance>> memberLists = new ArrayList<List<Instance>>();
-		int count = 0;
-		
-		for (int i = 0; i < getNumRows(); i++) {
-			List<Instance> memberList = new ArrayList<Instance>();
-			memberLists.add(memberList);
-		}
-		
-		for (int i = 0; i < getNumRows(); i++) {
-			for (int j = 0; j <= i; j++) {
-//				if (i == j) {
-//					List<Instance> memberList = new ArrayList<Instance>();
-//					memberLists.add(memberList);
-//				}
-				if (getInstance(i).equals(getInstance(j))) {
-					if (i != j) {
-						count++;
-					}
-//					if (memberLists.get(j).isEmpty()) {
-//						memberLists.get(j).add(i);
-//						//memberLists.get(i).add(j);
-//					} else {
-//						memberLists.get(j).add(i);
-//					}
-					memberLists.get(j).add(getInstance(i));
-					break;
-				}
-			}
-		}
-		
-		for (int i = 0; i < memberLists.size(); i++) {
-			if (memberLists.get(i).isEmpty()) {
-				memberLists.remove(i);
-				i--;
-			}
-		}
-		return memberLists;
 	}
 }
