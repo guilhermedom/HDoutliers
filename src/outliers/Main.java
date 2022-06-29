@@ -43,10 +43,13 @@ public class Main {
 				catList.add(i);
 			}
 		}
+		// transform categorical data to continuous, if there are categorical variables
 		Table data = transform ? dt.makeContinuousRepresentation(catList) : dataset;
+		
+		// run outlier detector over transformed data using hyperparameters informed by user
 		HDoutliers detector = new HDoutliers();
 		List<List<Instance>> members = detector.getHDmembers(data, maxrows, radius);
-		//System.out.println(members.size() + "\n");
+		System.out.println(members.size() + "\n");
 		List<Instance> outliers = detector.getHDoutliers(data, members, alpha, false);
 		System.out.println(outliers.size() + "\n");
 
@@ -59,6 +62,7 @@ public class Main {
 //			System.out.println(data.getInstance(i).toString());
 //		}
 				
+		// search for the best alpha hyperparameter value
 //		double alpha_step = 0.05;
 //		double alpha_max = 0.5;
 //		//while (alpha < 0.06) {
@@ -72,6 +76,7 @@ public class Main {
 //			alpha += alpha_step;
 		//}
 		
+		// find outliers and inliers
 //		for (int i = 0; i < data.getNumRows(); i++) {
 //			System.out.print((i + 1) + ": ");
 //			if (outliers.contains(data.getInstance(i))) {
@@ -80,15 +85,6 @@ public class Main {
 //				System.out.println("0");
 //			}
 //		}
-		
-		// run the algorithm and compute runtime
-		//long start = System.currentTimeMillis();
-		//HySortOD hsod = new HySortOD(b, strategy);		
-		//double[] yPred = hsod.score(dataset);
-		//long end = System.currentTimeMillis();
-		
-		//double time = (end - start) / 1000.0;
-		//System.out.println(String.format("runtime: %.8f", time));
 		
 		// calculate the auc score if possible
 //		if (dataset.hasLabel()) {
